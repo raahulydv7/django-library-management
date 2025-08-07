@@ -1,0 +1,17 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser
+
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username','email','role','password1','password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in ['username', 'email', 'role', 'password1', 'password2']:
+            self.fields[field].help_text = None
+            

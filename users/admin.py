@@ -9,6 +9,9 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'username', 'fname','lname' 'created_at']
+    list_display = ['id', 'username', 'fname','lname' ,'created_at']
     search_fields = ['id', 'user__username','fname','lname']
     ordering = ['-created_at']
+
+    def username(self, obj):
+        return obj.user.username

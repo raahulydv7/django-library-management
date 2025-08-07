@@ -3,6 +3,6 @@ from django.dispatch import receiver
 from .models import CustomUser,UserProfile
 
 @receiver(post_save, sender=CustomUser)
-def user_profile(sender, instance , created, kwargs):
+def user_profile(sender, instance , created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
