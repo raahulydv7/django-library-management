@@ -4,8 +4,7 @@ from .models import CustomUser
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
-def root(request):
-    return render(request,'users/root.html')
+
 
 
 def create_user(request):
@@ -37,3 +36,7 @@ def authenticate_user(request):
         form = CustomAuthenticationForm()
     return render(request,'users/authenticate_user.html',{'form':form})
 
+def logout_user(request):
+    logout(request)
+    messages.success(request, "User logged out successfully.")
+    return redirect('root')
