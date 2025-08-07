@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
         return self.username
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     fname = models.CharField(max_length=50, null=True, blank=True)
     lname = models.CharField(max_length=50, null=True, blank=True)
     contact = models.CharField(max_length=10, null=True, blank=True)
@@ -22,4 +22,4 @@ class UserProfile(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username} {self.fname} {self.lname}"
+        return f"{self.user.username} {self.fname or ''} {self.lname or ''}"
