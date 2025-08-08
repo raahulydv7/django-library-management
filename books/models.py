@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from users.models import CustomUser
 class Books(models.Model):
     title = models.CharField(max_length=50,unique=True)
     slug = models.CharField(max_length=50, unique=True , blank=True)
@@ -21,3 +22,4 @@ class Books(models.Model):
     
     def __str__(self):
         return f"{self.title} {self.author}"
+

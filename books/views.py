@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import Books
 from .forms import BookForm
 from django.contrib import messages
@@ -29,3 +29,8 @@ def add_book(request):
 def book_list(request):
     books_list = Books.objects.all()
     return render(request, 'books/books_list.html',{'books':books_list})
+
+@login_required
+def book_details(request,slug):
+    book = get_object_or_404(Books, slug=slug)
+    return render(request, 'books/book_details.html',{'book':book})

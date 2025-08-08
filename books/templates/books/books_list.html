@@ -8,7 +8,7 @@
     <div class="row">
         {% for b in books %}
         <div class="col-md-3 mb-4">
-            <a href="" class="text-decoration-none text-dark">
+            <a href="{% url 'book-details' b.slug %}" class="text-decoration-none text-dark">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ b.image.url }}" class="card-img-top" alt="{{ b.title }}" style="height: 200px; object-fit: cover;">
                     <div class="card-body text-center">
