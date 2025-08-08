@@ -3,7 +3,7 @@ from .models import Books,BorrowBook,BookBorrowHistory
 from .forms import BookForm,BorrowBookForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
-
+from django.utils import timezone
 
 
 
@@ -58,7 +58,11 @@ def borrow_book(request,slug):
             book.quantity -= 1
             book.save()
 
-            BookBorrowHistory.objects.create(book_borrow=borrow,action='BORROWED') #create history
+            BookBorrowHistory.objects.create(
+                book_borrow=borrow,
+                action='BORROWED',
+                note='Book borrowed successfully.'
+            ) #create history
 
             messages.success(request, f"You have successfully borrowed '{book.title}'. Due date: {borrow.due_date}")
             return redirect('book-details', slug=book.slug)
@@ -66,3 +70,26 @@ def borrow_book(request,slug):
         form = BorrowBookForm()
 
     return render(request,'books/borrow_book.html', {'form': form, 'book': book})
+
+@login_required
+def borrow_book_history(request):
+    user = request.user
+    history = BookBorrowHistory.objects.filter(book_borrow__user=user).select_related('book_borrow__book')
+    return render(request, 'books/history.html', {'history': history})
+
+@login_required
+def return_book(request,borrow_id):
+    user = request.user
+    borrow = get_object_or_404(BorrowBook, id=borrow_id,user=user)
+    borrow.returned = True
+    borrow.return_date = timezone.now().date()
+    borrow.save()
+
+    BookBorrowHistory.objects.create(
+        book_borrow=borrow,
+        action='RETURNED',
+        note='Book returned successfully.'
+    )
+    borrow.book.quantity +=1
+    borrow.book.save()
+    return redirect('history')

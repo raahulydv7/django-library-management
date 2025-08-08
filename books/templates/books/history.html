@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}My Borrow History{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="container text-center">
+        {% if history %}
+            {% for h in history %}
+                <div class="row border border-success shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="{{ h.book_borrow.book.image.url }}" class="img-thumbnail" alt="{{ h.book_borrow.book.title }}" style="width: 200px; height: 200px; object-fit: cover;">
+                            </div>
+                            {% if h.action == 'BORROWED' %}
+                            <div class="col-4 text-start">
+                                <h3>{{ h.book_borrow.book.title }}</h3>
+                                <p><strong>Due Date:</strong> {{ h.book_borrow.due_date }}</p>
+                                <p><strong>Borrowed On:</strong> {{ h.book_borrow.borrow_date }}</p>
+                                <p><strong>Action:</strong> {{ h.action }}</p>
+                                <div>
+                                    <a href="{% url 'return-book' h.book_borrow.id %}" class="btn btn-success">Return</a>
+                               </div>
+                            </div>
+                            
+                            {% else %}
+                            
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No borrow history found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

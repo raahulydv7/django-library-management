@@ -1,5 +1,5 @@
 from django import forms
-from .models import Books,BorrowBook
+from .models import Books,BorrowBook,BookBorrowHistory
 from datetime import timedelta
 from django.utils import timezone
 class BookForm(forms.ModelForm):
@@ -23,5 +23,15 @@ class BorrowBookForm(forms.ModelForm):
         if commit:
             borrow.save()
         return borrow
+    
+class BookBorrowHistoryForm(forms.ModelForm):
+    class Meta:
+        model = BookBorrowHistory
+        fields = ['action']
+class BorrowBookReturnForm(forms.ModelForm):
+    return_action = forms.ChoiceField()
+    class Meta:
+        model = BorrowBook
+        fields = ['return_date','returned','return_action']
     
             

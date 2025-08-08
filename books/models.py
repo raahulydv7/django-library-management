@@ -53,6 +53,15 @@ class BorrowBook(models.Model):
             self.due_date = timezone.now().date() + timedelta(days=7)
         super().save(*args, **kwargs)
 
+    def marks_as_returned(self, note="Book returned"):
+        self.returned = True
+        self.return_date = timezone.now().date()
+        self.save()
+        BookBorrowHistory.objects.create(
+            book_borrow = self,
+            action='RETURNED',
+            note=note
+        )
 class BookBorrowHistory(models.Model):
     book_borrow = models.ForeignKey(BorrowBook, on_delete=models.CASCADE, related_name="history_records")
     action = models.CharField(max_length=20,choices=[
@@ -64,11 +73,6 @@ class BookBorrowHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    choices=[
-            ('BORROWED', 'Borrowed'),
-            ('RETURNED', 'Returned'),
-            ('OVERDUE', 'Overdue')
-        ]
 
     def __str__(self):
         return f"History - {self.book_borrow.book.title} ({self.action})"
