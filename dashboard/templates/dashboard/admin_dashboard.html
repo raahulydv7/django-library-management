@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Books Overview</h3>
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-3 mb-4">
+            <a href="{% url 'book-borrow-details' book.slug %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm">
+                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h6>{{ book.title }}</h6>
+                        <small>Stock: {{ book.quantity }}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

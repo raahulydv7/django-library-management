@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}My Borrowed Books{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>My Borrowed Books</h3>
+    <div class="row">
+        {% for borrow in borrowed_books %}
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <img src="{{ borrow.book.image.url }}" class="card-img-top" alt="{{ borrow.book.title }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h6>{{ borrow.book.title }}</h6>
+                    <small>Due: {{ borrow.due_date }}</small>
+                    {% if borrow.is_overdue %}
+                        <p class="text-danger">Overdue! Fine: ₹{{ borrow.fine_amount }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center mt-4">You have not borrowed any books.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ def create_user(request):
             user = form.save()
             login(request,user)
             messages.success(request, "User Created and logged in!!")
-            return redirect('root')
+            return redirect('home')
         else:
             messages.success(request, "Unable to create user. Please correct the errors below.")
 
@@ -30,7 +30,7 @@ def authenticate_user(request):
             user = form.get_user()
             login(request,user)
             messages.success(request, 'Login successful.')
-            return redirect('root')
+            return redirect('home')
         else:
             messages.error(request, 'Invalid username or password.')
     else:

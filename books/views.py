@@ -4,8 +4,7 @@ from .forms import BookForm,BorrowBookForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
 
-def root(request):
-    return render(request,'books/root.html')
+
 
 
 def is_admin(user):
@@ -19,6 +18,7 @@ def add_book(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Book added successfully.")
+            return redirect('books')
         else:
             messages.error(request, 'Error while creating book , Try again..')
     else:

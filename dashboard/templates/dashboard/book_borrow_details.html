@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Borrow Details - {{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>{{ book.title }} - Borrow Details</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Returned</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in borrow_records %}
+            <tr>
+                <td>{{ record.user.username }}</td>
+                <td>{{ record.borrow_date }}</td>
+                <td>{{ record.due_date }}</td>
+                <td>
+                    {% if record.returned %}
+                        ✅
+                    {% else %}
+                        ❌
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
